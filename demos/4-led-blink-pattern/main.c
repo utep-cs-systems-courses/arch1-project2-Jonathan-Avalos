@@ -24,7 +24,7 @@ __interrupt_vec(WDT_VECTOR) WDT()	/* 250 interrupts/sec */
 {
   // handle blinking 
   blinkCount ++;
-  if (blinkCount >= blinkLimit) { // on for 1 interrupt period
+  if (blinkCount >= blinkLimit){ //1 interrupt period
     blinkCount = 0;
     P1OUT |= LED_GREEN;
   } else		          // off for blinkLimit - 1 interrupt periods

@@ -1,3 +1,4 @@
+
 #include <msp430.h>
 #include "libTimer.h"
 #include "buzzer.h"
@@ -97,34 +98,83 @@ __interrupt_vec(PORT2_VECTOR) Port_2()
 
 }
 
-int second = 0;
+int second = 1;
 int count = 0;
+int temp_second = 0;
+int speed = 125;
+
 void
 __interrupt_vec(WDT_VECTOR) WDT()
 {
-  if (count >= 250){
-    count = 0;
-    second++;
+  if(count < 25){
+    buzzer_set_period(0);
   }
-  if(second >= 5){
-    second = 0;
-  }
-  switch(second){
-  case 0:
-    buzzer_set_period(4105); 
-    break;
-  case 1:
-    buzzer_set_period(3875);
-    break;
-  case 2:
-    buzzer_set_period(3657);
-    break;
-  case 3:
-    buzzer_set_period(3452);
-    break;
-  case 4:
-    buzzer_set_period(3258);
-    break;
+  else{
+  
+    if (count >= speed){
+      count = 0;
+      second++;
+    }
+    if(second >= 25){
+      second = 0;
+      speed = 125;
+    }
+    switch(second){
+    case 0:
+      buzzer_set_period(0); 
+      break;
+    case 1:   // ^E
+    case 2:
+    case 3:
+    case 5:
+    case 16:
+      buzzer_set_period(1516);
+      break;
+    case 4:  // ^C
+    case 8:
+    case 22:
+      buzzer_set_period(1911);
+      break;
+    case 6:   // ^G
+    case 17:
+    case 20:
+      buzzer_set_period(1275);
+      break;
+    case 7:
+    case 9:
+      buzzer_set_period(2551);
+      break;
+    case 10:
+      buzzer_set_period(3033);
+      break;
+    case 11:
+    case 14:
+      speed = 80;
+      buzzer_set_period(2272);
+      break;
+    case 12:
+    case 24:
+      buzzer_set_period(2024);
+      break;
+    case 13:
+      buzzer_set_period(2145);
+      break;
+    case 15:
+      buzzer_set_period(2551);
+      break;
+    case 18:
+      buzzer_set_period(1136);
+      break;
+    case 19:
+      buzzer_set_period(1431);
+      break;
+    case 21:
+      speed = 65;
+      buzzer_set_period(1516);
+    case 23:
+      buzzer_set_period(1702);
+      break;
+    }
   }
 
   count++;
